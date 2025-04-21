@@ -13,10 +13,13 @@ public class TransactionService {
 
     private final TransactionStorage transactionStorage;
     private final TransactionConverter converter;
+    private final TransactionValidation validation;
 
-    public TransactionService(TransactionStorage transactionStorage, TransactionConverter converter) {
+
+    public TransactionService(TransactionStorage transactionStorage, TransactionConverter converter, TransactionValidation validation) {
         this.transactionStorage = transactionStorage;
         this.converter = converter;
+        this.validation = validation;
     }
 
 

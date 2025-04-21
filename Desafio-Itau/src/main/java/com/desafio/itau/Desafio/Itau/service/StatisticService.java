@@ -18,14 +18,15 @@ public class StatisticService {
     @Value("${statistics.interval.seconds}")
     private long statisticsIntervalSeconds;
     private static final BigDecimal ZERO = BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
-
+    @Value("${app.timezone}")
+    private String timeZone;
 
     public StatisticService(TransactionStorage storage) {
         this.storage = storage;
     }
 
     public StatisticResponseDTO calculateLastSeconds() {
-        OffsetDateTime now = OffsetDateTime.now(ZoneId.of("America/Sao_Paulo"));
+        OffsetDateTime now = OffsetDateTime.now(ZoneId.of(timeZone));
         OffsetDateTime limit = now.minusSeconds(statisticsIntervalSeconds);
 
 
@@ -38,9 +39,11 @@ public class StatisticService {
 
 
         List<Transaction> lasts = storage.getAllTransactions().stream()
-                .filter(t -> t.getDateTime() != null && t.getDateTime().isAfter(limit))
+                .filter(t -> {
+                    OffsetDateTime dt = t.getDateTime();
+                    return dt != null && dt.isAfter(limit) && !dt.isAfter(now);
+                })
                 .toList();
-
 
         if (lasts.isEmpty()) {
             return new StatisticResponseDTO(0, ZERO, ZERO, ZERO, ZERO);

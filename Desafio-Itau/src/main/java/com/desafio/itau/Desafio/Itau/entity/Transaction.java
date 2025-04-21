@@ -1,18 +1,9 @@
 package com.desafio.itau.Desafio.Itau.entity;
 
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
 
-@RequiredArgsConstructor
-@Builder
-@EqualsAndHashCode
-@NoArgsConstructor
 public class Transaction {
     private BigDecimal amount;
     private OffsetDateTime dateTime;
