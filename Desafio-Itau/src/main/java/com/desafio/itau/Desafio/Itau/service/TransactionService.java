@@ -26,4 +26,8 @@ public class TransactionService {
         transactionStorage.create(transaction);
 
     }
+
+    public void deleteTransactions() {
+        transactionStorage.clearTransactions();
+    }
 }
