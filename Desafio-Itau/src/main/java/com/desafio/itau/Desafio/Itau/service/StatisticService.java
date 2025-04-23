@@ -26,7 +26,8 @@ public class StatisticService {
     }
 
     public StatisticResponseDTO calculateLastSeconds() {
-        OffsetDateTime now = OffsetDateTime.now(ZoneId.of(timeZone));
+        ZoneId zoneId = ZoneId.of(timeZone);
+        OffsetDateTime now = OffsetDateTime.now(zoneId);
         OffsetDateTime limit = now.minusSeconds(statisticsIntervalSeconds);
 
 
@@ -40,8 +41,8 @@ public class StatisticService {
 
         List<Transaction> lasts = storage.getAllTransactions().stream()
                 .filter(t -> {
-                    OffsetDateTime dt = t.getDateTime();
-                    return dt != null && dt.isAfter(limit) && !dt.isAfter(now);
+                    OffsetDateTime storedDate = t.getDateTime().atZoneSameInstant(zoneId).toOffsetDateTime();
+                    return storedDate.isAfter(limit) && !storedDate.isAfter(now);
                 })
                 .toList();
 
