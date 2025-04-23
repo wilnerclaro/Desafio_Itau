@@ -3,6 +3,7 @@ package com.desafio.itau.Desafio.Itau.service;
 import com.desafio.itau.Desafio.Itau.dto.StatisticResponseDTO;
 import com.desafio.itau.Desafio.Itau.entity.Transaction;
 import com.desafio.itau.Desafio.Itau.storage.TransactionStorage;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,7 @@ import java.time.ZoneId;
 import java.util.List;
 
 @Service
+@Slf4j
 public class StatisticService {
     private final TransactionStorage storage;
     @Value("${statistics.interval.seconds}")
@@ -31,11 +33,11 @@ public class StatisticService {
         OffsetDateTime limit = now.minusSeconds(statisticsIntervalSeconds);
 
 
-        System.out.println("⏰ NOW: " + now);
-        System.out.println("⏳ LIMIT: " + limit);
+        log.info("⏰ NOW: {}", now);
+        log.info("⏳ LIMIT: {}", limit);
 
         for (Transaction t : storage.getAllTransactions()) {
-            System.out.println("🔄 Transação armazenada: " + t.getDateTime());
+            log.info("\uD83D\uDD04 Transação armazenada: {}", t.getDateTime());
         }
 
 
